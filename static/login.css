@@ -1,0 +1,111 @@
+html {
+    font-family: 'Oxygen', sans-serif;
+    font-size: calc((100vh - 640px) / (2560 - 640) * (36 - 20) + 20px);
+    box-sizing: border-box;
+}
+
+body {
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100vh;
+    margin: 0px;
+    box-sizing: border-box;
+    padding: 0.5em;
+}
+
+nav {
+    top: 0;
+    left: 0;
+    padding: 1em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav a {
+    font-size: 1em;
+    outline: none;
+    text-decoration: none;
+    color: #3771ff;
+    font-family: "Nunito", sans-serif;
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+}
+
+.brand {
+    font-weight: bold;
+}
+
+.content {
+    font-size: 0.9em;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 2em;
+    padding-top: 0.5em;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+}
+
+input {
+    background-color: white;
+    color: black;
+    font-size: 0.9em;
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    padding: 0.9em;
+    border-radius: 5px;
+    border: 2px solid rgba(55, 113, 255, 0.85);
+    margin-bottom: 1em;
+    box-sizing: border-box;
+}
+
+input:hover,
+input:focus {
+    outline: none;
+}
+
+.submit {
+    background-color: #3771ff;
+    color: white;
+    font-size: 1em;
+    font-family: Nunito, sans-serif;
+    text-align: center;
+    width: 100%;
+    padding: 0.65em;
+    border-radius: 5px;
+    border: 2px solid rgba(55, 113, 255, 0.85);
+    margin-bottom: 0.3em;
+    outline: none;
+    padding-left: 1.1em;
+    padding-right: 1.1em;
+}
+
+.submit:hover,
+.submit:focus {
+    outline: none;
+    cursor: pointer;
+}
+
+.submit::-moz-focus-inner {
+    border: 0;
+}
+
+.content a {
+    color: #3771ff;
+    font-family: Nunito, sans-serif;
+    font-size: 0.8em;
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    outline: none;
+}
+
+a::-moz-focus-inner {
+    border: 0;
+}

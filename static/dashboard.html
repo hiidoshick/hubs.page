@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | Hubs.page</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oxygen" rel="stylesheet">
+    <link href="static/dashboard.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.21/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.5.1/vue-resource.min.js"></script>
+    <link href="https://unpkg.com/ionicons@4.5.0/dist/css/ionicons.min.css" rel="stylesheet">
+</head>
+
+<body style="">
+    <nav class="menu-panel" id="nav">
+        <div style="height: calc(100% - 3em)">
+            <a href=""></a>
+            <button class="menu-button brand">hubs.page</button>
+            </a>
+            <button @click="showNewProject()" class="menu-button">New project</button>
+            <a href="">
+                <button class="menu-button">My projects</button>
+            </a>
+            <a href="">
+                <button class="menu-button bottom">Help</button>
+            </a>
+            <a href="">
+                <button class="menu-button">Contact us</button>
+            </a>
+        </div>
+        <div style="bottom: 0px">
+            <a href="account">
+                <button class="menu-button">My account</button>
+            </a>
+        </div>
+    </nav>
+
+    <div id="popups">
+        <div v-if="getDeletePopup()" style="position: fixed; width: 100vw; height: 100vw; left: 0; top: 0; box-sizing: border-box; z-index: 95; background-color: rgba(13,26,55,0.5); display: flex; justify-content: center">
+            <div style="position: fixed; width: auto; padding: 1em; box-sizing: border-box; top: 2em; z-index: 100; background-color: white; border-radius: 5px; font-family: 'Nunito', sans-serif;">
+                Do you really want to delete this files?
+                <div style="box-sizing: border-box; width: 100%; margin-top: 1em;">
+                    <button @click="deleteFiles()" class="delete-button">Delete</button>
+                    <button @click="changeDeletePopup()" class="cancel-button" style="margin-left: 0.25em">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <div v-if="newProjectPopup" style="position: fixed; width: 100vw; height: 100vw; left: 0; top: 0; box-sizing: border-box; z-index: 95; background-color: rgba(13,26,55,0.5); display: flex; justify-content: center">
+            <div style="position: fixed; width: auto; padding: 1em; box-sizing: border-box; top: 2em; z-index: 100; background-color: white; border-radius: 5px; font-family: 'Nunito', sans-serif;">
+                <input v-model="projectName" type="text" placeholder="Project name..."/>
+                <div style="box-sizing: border-box; width: 100%; margin-top: 1em;">
+                    <button @click="createProject()" class="upload-button">Create</button>
+                    <button @click="changeNewPopup()" class="cancel-button" style="margin-left: 0.25em">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div v-if="getUploadPopup()" style="position: fixed; width: 100vw; height: 100vw; left: 0; top: 0; box-sizing: border-box; z-index: 95; background-color: rgba(13,26,55,0.5); display: flex; justify-content: center">
+            <div style="position: fixed; width: auto; padding: 1em; box-sizing: border-box; top: 2em; z-index: 100; background-color: white; border-radius: 5px; font-family: 'Nunito', sans-serif;">
+                <div style="display: flex; justify-content: center">
+                    <input type="file" name="file" id="file-field" style="font-family: 'Nunito'; font-size: 0.9em; color: black; background-color: white" />
+                </div>
+                <div style="box-sizing: border-box; width: 100%; margin-top: 1em;">
+                    <button @click="uploadFiles()" class="upload-button">Upload</button>
+                    <button @click="changeUploadPopup()" class="cancel-button" style="margin-left: 0.25em">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="container" style="top: 0px; right: 0px; padding: 2em; width: calc(100% - 15vw); box-sizing: border-box; height: 100vh; margin: 0px; float: right; position: relative; display: table">
+
+        <div style="display: table-row">
+            <div class="files" style="float: left">
+                <a href="">
+                    <button class="files-button head-files">My projects</button>
+                </a>
+                <div v-for="d in dirs">
+                    <button class="files-button" @click="getFiles(d.Name, 'md-folder')"><i style="font-size: 1.05em; padding-right: 0.5em;"
+                            :class="'icon ion-' + d.Type"></i>{{ d.Name }}
+                    </button>
+                </div>
+            </div>
+            <div id="explorer" class="files" style="float: right; margin-bottom: 4.9em">
+                <div style="float: left; overflow: hidden; max-width: 50%">
+                    <input v-if="!empty" type="checkbox" id="cbx-all" style="display: none;" v-model:checked="this.baseChecked">
+                    <label v-if="!empty" @click="checkAll" for="cbx-all" class="check" style="width: 2.5em; height: 3em; padding: 1em; box-sizing: border-box; padding-right: 0.5em">
+                        <svg width="1em" height="1em" viewBox="0 0 18 18">
+                            <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
+                            <polyline points="1 9 7 14 15 4"></polyline>
+                        </svg>
+                    </label>
+                    <label v-if="empty" style="width: 2.5em; height: 3em; box-sizing: border-box;"></label>
+                    <button v-if="empty" class="files-button head-files">
+
+                        Select a project...
+                    </button>
+                    <button style="width: auto;" v-else class="files-button head-files">{{
+                        dirName }}</button>
+                </div>
+                <div style="float: right">
+                    <button v-if="!empty" @click="uploadPopup=true" style="width: auto" class="files-button head-files"><i
+                            style="font-size: 1.1em" class="'icon ion-md-add"></i></button>
+                    <button v-if="!empty" style="width: auto" class="files-button head-files"><i style="font-size: 1.1em"
+                            class="'icon ion-md-link"></i></button>
+                    <button v-if="!empty" style="width: auto" class="files-button head-files"><i style="font-size: 1.1em"
+                            class="'icon ion-md-star-outline"></i>
+                    </button>
+                    <button v-if="!empty" style="width: auto" class="files-button head-files"><i style="font-size: 1.1em"
+                            class="'icon ion-md-download"></i>
+                    </button>
+                    <button v-if="!empty" @click="enableDeletePopupIfNotEmpty" style="width: auto" class="files-button head-files"><i
+                            style="font-size: 1.1em" class="'icon ion-md-trash"></i></button>
+                </div>
+                <div v-if="dirName != ''" @click="getFiles(filterUp(dirName), 'md-folder')" class="files-button" style="height: 3em; box-sizing:border-box; margin:0; padding: 0">
+                    <div style="float:left;width: 3em; margin: 0; height: 100%; display: flex; align-items: center; padding: 1em; box-sizing: border-box; justify-content: center;">
+                        <i style="font-size: 1.05em" class="icon ion-md-arrow-round-up"></i>
+                    </div>
+                    <div style="float: right; height: 100%; width: calc(100% - 3em); padding: 1em; box-sizing: border-box; display: flex; align-items: center; padding-left: 0">
+                        Up
+                    </div>
+                </div>
+                <div v-if="empty" class="files-button" style="height: 3em; box-sizing:border-box; margin:0; padding: 0">
+                    <div style="float:left;width: 3em; margin: 0; height: 100%; display: flex; align-items: center; padding: 1em; box-sizing: border-box; justify-content: center;">
+                        <i style="font-size: 1.05em" class="icon ion-md-add"></i>
+                    </div>
+                    <div style="float: right; height: 100%; width: calc(100% - 3em); padding: 1em; box-sizing: border-box; display: flex; align-items: center; padding-left: 0">
+                        New Project...
+                    </div>
+                </div>
+
+                <div v-else v-for="(f, i) in files">
+                    <div class="files-button" style="overflow: hidden; text-overflow: ellipsis;height: 3em; white-space: nowrap; box-sizing:border-box; margin:0; padding: 0">
+                        <div style="float:left;width: 3em; margin: 0; height: 100%; display: flex; align-items: center;">
+                            <input type="checkbox" :id="'cbx-'+i" style="display: none;" v-model:checked="f.Checked">
+                            <label :for="'cbx-'+i" class="check" style="width: 3em; height: 3em; padding: 1em; box-sizing: border-box; padding-right: 0.5em">
+                                <svg width="1em" height="1em" viewBox="0 0 18 18">
+                                    <path d="M1,9 L1,3.5 C1,2 2,1 3.5,1 L14.5,1 C16,1 17,2 17,3.5 L17,14.5 C17,16 16,17 14.5,17 L3.5,17 C2,17 1,16 1,14.5 L1,9 Z"></path>
+                                    <polyline points="1 9 7 14 15 4"></polyline>
+                                </svg>
+                            </label>
+                        </div>
+
+                        <div @click="getFiles(dirName + f.Name, f.Type)" style="float: right; height: 100%; width: calc(100% - 3em); padding: 1em; box-sizing: border-box; padding-left: 0; display: flex; align-items: center;">
+                            <i style="font-size: 1.05em; padding-right: 0.5em;" :class="'icon ion-' + f.Type"></i>{{
+                            f.Name }}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div v-if="!empty" class="files-button" style="height: 3em; box-sizing:border-box; margin:0; padding: 0">
+                    <div style="float:left;width: 3em; margin: 0; height: 100%; display: flex; align-items: center; padding: 1em; box-sizing: border-box; justify-content: center;">
+                        <i style="font-size: 1.05em" class="icon ion-md-add"></i>
+                    </div>
+                    <div @click="uploadPopup=true" style="float: right; height: 100%; width: calc(100% - 3em); padding: 1em; box-sizing: border-box; display: flex; align-items: center; padding-left: 0">
+                        Add file...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer style="width: 100%; background-color: #6693FF; color: white; padding: 2em; bottom: 0px; margin: 0px; position: absolute; left: 0px; box-sizing: border-box; font-size: 0.9em;font-family: 'Nunito', sans-serif;">
+            <div style="float: left">hubs.page &copy; 2019</div>
+        </footer>
+    </div>
+    <script src="static/dashboard.js"></script>
+</body>
+
+</html>
+
+
+<!--TODO: При открытии пустого проекта пропадают кнопки и надпись как у пространства без проекта-->

@@ -1,0 +1,289 @@
+html {
+    font-family: 'Oxygen', sans-serif;
+    font-size: calc((100vh - 640px) / (2560 - 640) * (32 - 16) + 16px);
+    box-sizing: border-box;
+}
+
+body {
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100vh;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+}
+
+button {
+    outline: none;
+}
+
+a:hover,
+a:focus {
+    text-decoration: none;
+    color: inherit;
+    outline: none;
+}
+
+.menu-button {
+    color: white;
+    margin-top: 0.5em;
+    font-size: 1em;
+    background-color: inherit;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    padding: 0.8em;
+    border-radius: 5px;
+    width: 100%;
+    font-family: 'Nunito', sans-serif;
+}
+
+.menu-button:hover {
+    outline: none;
+    background-color: #3678ff;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+}
+
+.menu-button:focus {
+    outline: none;
+}
+
+.brand {
+    margin-top: 0px;
+    font-weight: bold;
+    font-size: 1.2em;
+    font-family: 'Nunito', sans-serif;
+}
+
+.brand:hover {
+    background-color: #3771ff;
+}
+
+.brand:focus {
+    outline: none;
+}
+
+.menu-panel {
+    top: 0px;
+    left: 0px;
+    height: 100vh;
+    width: 15vw;
+    background-color: #3771ff;
+    margin: 0px;
+    padding: 1em;
+    box-sizing: border-box;
+    position: fixed;
+    font-family: 'Nunito', sans-serif;
+}
+
+.bottom {
+    float: bottom;
+    bottom: 0px;
+}
+
+.files {
+    background-color: #F1F1F9;
+    width: calc(50% - 1em);
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 1em;
+}
+
+.files-button {
+    color: black;
+    text-align: left;
+    margin-top: 0.5em;
+    font-size: 1em;
+    background-color: inherit;
+    outline: none;
+    border: none;
+    text-decoration: none;
+    padding: 0.8em;
+    border-radius: 5px;
+    width: 100%;
+    diaplay: flex;
+    align-items: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 3em;
+    white-space: nowrap;
+}
+
+.files-button:hover {
+    outline: none;
+    background-color: #eaeaf2;
+    cursor: pointer;
+}
+
+.files-button:focus {
+    outline: none;
+}
+
+.head-files {
+    margin-top: 0px;
+    font-weight: bold;
+    padding: calc(0.8em / 1.2);
+    font-size: 1.2em;
+    font-family: 'Nunito', sans-serif;
+}
+
+.head-files:hover {
+    background-color: #F1F1F9;
+}
+
+/* TODO: чекбоксы!!!!!!!!!! */
+
+.check {
+    cursor: pointer;
+    position: relative;
+    margin: 0;
+    width: 1em;
+    height: 1em;
+    -webkit-tap-highlight-color: transparent;
+    transform: translate3d(0, 0, 0);
+}
+
+.check:before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 3em;
+    height: 3em;
+    padding: 1em;
+    box-sizing: border-box;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.check svg {
+    position: relative;
+    z-index: 1;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke: #c8ccd4;
+    stroke-width: 1.5;
+    transform: translate3d(0, 0, 0);
+    transition: all 0.2s ease;
+}
+
+.check svg path {
+    stroke-dasharray: 60;
+    stroke-dashoffset: 0;
+}
+
+.check svg polyline {
+    stroke-dasharray: 22;
+    stroke-dashoffset: 66;
+}
+
+.check:hover:before {
+    opacity: 1;
+}
+
+.check:hover svg {
+    stroke: #3771ff;
+}
+
+*[id|="cbx"]:checked + .check svg {
+    stroke: #3771ff;
+}
+
+*[id|="cbx"]:checked + .check svg path {
+    stroke-dashoffset: 60;
+    transition: all 0.3s linear;
+}
+
+*[id|="cbx"]:checked + .check svg polyline {
+    stroke-dashoffset: 42;
+    transition: all 0.2s linear;
+    transition-delay: 0.15s;
+}
+
+.delete-button {
+    background-color: rgba(255, 67, 54, 0.11);
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    font-size: 1em;
+    color: #ff4336;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    font-family: 'Nunito', sans-serif;
+}
+
+.delete-button:hover {
+    background-color: rgba(255, 67, 54, 0.11);
+    outline: none;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background-color: white;
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    font-size: 1em;
+    color: #3771ff;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    font-family: 'Nunito', sans-serif;
+}
+
+.cancel-button:hover {
+    background-color: rgba(55, 113, 255, 0.11);
+    outline: none;
+    cursor: pointer;
+}
+
+.upload-button {
+    background-color: rgba(0, 179, 0, 0.11);
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 0.75em;
+    padding-right: 0.75em;
+    font-size: 1em;
+    color: #00b300;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    font-family: 'Nunito', sans-serif;
+}
+
+.upload-button:hover {
+    background-color: rgba(0, 179, 0, 0.11);
+    outline: none;
+    cursor: pointer;
+}
+
+input[type="text"] {
+    background-color: white;
+    color: black;
+    font-size: 0.9em;
+    font-family: 'Roboto Mono', monospace;
+    text-align: center;
+    padding: 0.9em;
+    border-radius: 5px;
+    border: 2px solid rgba(55, 113, 255, 0.85);
+    margin-bottom: 1em;
+    box-sizing: border-box;
+}
+
+input[type="text"]:hover,
+input[type="text"]:focus {
+    outline: none;
+}
